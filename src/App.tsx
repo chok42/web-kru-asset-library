@@ -51,13 +51,7 @@ function App() {
   ) : visible ? (
     <PublicLayout>
       <Routes>
-      <Route
-          index
-          element={
-            <>
-            </>
-          }
-        />
+        <Route index element={<></>} />
         <Route
           path="/login"
           element={
@@ -67,10 +61,7 @@ function App() {
             </>
           }
         />
-         <Route
-              path="/*"
-              element={<Navigate to="/" replace />}
-            />
+        <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </PublicLayout>
   ) : (
@@ -184,10 +175,7 @@ function App() {
             </>
           }
         />
-                <Route
-              path="/*"
-              element={<Navigate to="/" replace />}
-            />
+        <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </AdminLayout>
   );

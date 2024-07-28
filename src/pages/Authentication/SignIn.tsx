@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
@@ -18,7 +18,7 @@ const SignInSchema = Yup.object().shape({
 });
 
 const SignIn: React.FC = () => {
-  
+  const navigate = useNavigate()
   const [reqEmployee, setReqEmployee] = React.useState<boolean>(false)
 
   const onSubmitLogin  = async (username:string,password:string) => {
@@ -27,6 +27,7 @@ const SignIn: React.FC = () => {
     
     if (resp === '200') {
       window.location.reload()
+      navigate('/',{replace:true})
     } else if (resp === '404') {
       setReqEmployee(true);
     }
