@@ -63,7 +63,7 @@ function App() {
             </>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="https://kru-asset-library-01.netlify.app" replace />} />
       </Routes>
     </PublicLayout>
   ) : (
@@ -177,7 +177,7 @@ function App() {
             </>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="https://kru-asset-library-01.netlify.app" replace />} />
       </Routes>
     </AdminLayout>
   );
