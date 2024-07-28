@@ -10,7 +10,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router
-    basename='/kru'
+    basename='https://kru-asset-library-01.netlify.app/kru/'
     >
       <App />
     </Router>
