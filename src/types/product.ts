@@ -6,3 +6,8 @@ export type Product = {
   sold: number;
   profit: number;
 };
+
+export type ProductIsUsed = {
+  id: string;
+  name: string;
+};
