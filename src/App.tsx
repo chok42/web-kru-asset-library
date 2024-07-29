@@ -38,7 +38,6 @@ function App() {
 
   const fetchData = async () => {
     const resp = await EmployeeAuthenService();
-    console.log('resp',resp);
     
     setLoading(false);
     if (resp === '200') {
@@ -63,7 +62,7 @@ function App() {
             </>
           }
         />
-        <Route path="*" element={<Navigate to="https://kru-asset-library-01.netlify.app" replace />} />
+        <Route path="/*" element={<Navigate to="index.html" replace />} />
       </Routes>
     </PublicLayout>
   ) : (
@@ -177,7 +176,7 @@ function App() {
             </>
           }
         />
-        <Route path="*" element={<Navigate to="https://kru-asset-library-01.netlify.app" replace />} />
+        <Route path="/*" element={<Navigate to="/index.html" replace />} />
       </Routes>
     </AdminLayout>
   );
