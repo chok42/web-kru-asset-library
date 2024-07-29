@@ -8,6 +8,13 @@ export const serviceEmployee = {
     GET_EMPLOYEE_REGISTER_URL: "/employee/register",
 }
 
+export const serviceAsset = {
+    //employee
+    GET_ASSET_URL: "/asset/get",
+    GET_EMPLOYEE_AUTHEN_URL: "/employee/authen",
+    GET_EMPLOYEE_REGISTER_URL: "/employee/register",
+}
+
 
 // Local Storage
 export const removeStorage = async (value:string[]) => {
