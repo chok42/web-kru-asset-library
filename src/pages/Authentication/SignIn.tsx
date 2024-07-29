@@ -27,7 +27,6 @@ const SignIn: React.FC = () => {
     
     if (resp === '200') {
       window.location.reload()
-      navigate('/',{replace:true})
     } else if (resp === '404') {
       setReqEmployee(true);
     }

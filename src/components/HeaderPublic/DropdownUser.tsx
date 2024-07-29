@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
 import { removeStorage } from '../../constants/constant';
 
 const DropdownUser = () => {
-  const navigate = useNavigate()
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     removeStorage([])
-    navigate('/',{replace:true})
   }
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">

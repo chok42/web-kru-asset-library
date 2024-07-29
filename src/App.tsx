@@ -62,7 +62,7 @@ function App() {
             </>
           }
         />
-        <Route path="/*" element={<Navigate to="index.html" replace />} />
+        <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </PublicLayout>
   ) : (
@@ -176,7 +176,7 @@ function App() {
             </>
           }
         />
-        <Route path="/*" element={<Navigate to="/index.html" replace />} />
+        <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </AdminLayout>
   );
