@@ -19,6 +19,7 @@ import AdminLayout from './layout/AdminLayout';
 import PublicLayout from './layout/PublicLayout';
 import { EmployeeAuthenService } from './services/employee.service';
 import AssetTable from './pages/assets/AssetTable';
+import AssetInsert from './pages/assets/AssetInsert';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -84,6 +85,15 @@ function App() {
             <>
               <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <AssetTable />
+            </>
+          }
+        />       
+        <Route
+          path="/asset/insert"
+          element={
+            <>
+              <PageTitle title="Tables | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <AssetInsert />
             </>
           }
         />
