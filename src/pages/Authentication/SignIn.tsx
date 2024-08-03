@@ -1,10 +1,6 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
+import { Link } from 'react-router-dom';
 import { EmployeeLoginService } from '../../services/employee.service';
-import { setStorage } from '../../constants/constant';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup'
 
@@ -18,7 +14,6 @@ const SignInSchema = Yup.object().shape({
 });
 
 const SignIn: React.FC = () => {
-  const navigate = useNavigate()
   const [reqEmployee, setReqEmployee] = React.useState<boolean>(false)
 
   const onSubmitLogin  = async (username:string,password:string) => {

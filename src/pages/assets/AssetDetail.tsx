@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BsPencilSquare,BsTrash,BsInfoSquare } from "react-icons/bs";
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //types
 import { ProductIsUsed } from '../../types/product';
 //services
-import { AssetJson, GetAssetService } from '../../services/asset.service';
+import { AssetJson, GetAssetService, GetByIdAssetService } from '../../services/asset.service';
 //common
 import { processEnv } from '../../common/axios';
 
@@ -24,19 +24,21 @@ export const proIsUsed: ProductIsUsed[] = [
 
 
 
-const AssetTable = () => {
-  const navigate = useNavigate()
-  const [result, setResult] = useState<AssetJson[]>([])
-  useEffect(() => {
-    fatchData()
-  }, [])
+const AssetDetail = () => {
 
-  const fatchData = async () => {
-      const resp = await GetAssetService()
-      if(resp && resp.length > 0){
-        setResult(resp)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const [asset, setAsset] = useState<AssetJson>();
+
+    const { id }: { id: string } = location.state ? location.state : {};
+
+    useMemo(async () => {
+      const asset = await GetByIdAssetService(id);
+      if (asset) {
+        setAsset(asset);
       }
-  }
+    }, []);
+    
   
   return (
     <>
@@ -45,7 +47,7 @@ const AssetTable = () => {
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
             <h4 className="text-xl font-semibold text-black dark:text-white">
-              ตารางครุภัณฑ์
+              รายละเอียดครุภัณฑ์
             </h4>
             <Link
               to="/asset/insert"
@@ -76,7 +78,13 @@ const AssetTable = () => {
               <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-gray-2 text-left dark:bg-meta-4">
+                    <th className="min-w-[50] py-4 px-4 font-medium text-black dark:text-white">
+                      หัวข้อ
+                    </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                      รายละเอียด
+                    </th>
+                    {/* <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                       รหัสครุภัณฑ์
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
@@ -98,11 +106,47 @@ const AssetTable = () => {
                     <th className="min-w-[120px]  py-4 px-4 font-medium text-black dark:text-white">
                       การใช้งาน
                     </th>
-                    <th className="py-4 px-4 font-medium text-black dark:text-white"></th>
+                    <th className="py-4 px-4 font-medium text-black dark:text-white"></th> */}
                   </tr>
                 </thead>
                 <tbody>
-                  {result.length > 0 &&
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        รหัสครุภัณฑ์
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {asset?.asset_code}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                      ชื่อครุภัณฑ์
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {asset?.asset_name}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                      ประเภท
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {asset?.asset_type_name}
+                      </p>
+                    </td>
+                  </tr>
+                  {/* {result.length > 0 &&
                     result.map((item, key) => (
                       <tr key={key}>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -156,21 +200,16 @@ const AssetTable = () => {
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <div className="flex items-center space-x-3.5">
-                            <button
-                              type="button"
-                              onClick={() =>
-                                navigate(`/asset/detail`, {
-                                  state: { id: item.asset_id },
-                                })
-                              }
+                          <button
                             >
                               <BsInfoSquare className="hover:text-fuchsia-600" />
                             </button>
-                            <button>
+                            <button
+                            >
                               <BsTrash className="hover:text-danger" />
                             </button>
                             <button
-                              type="button"
+                              type='button'
                               onClick={() =>
                                 navigate(`/asset/update`, {
                                   state: { id: item.asset_id },
@@ -182,7 +221,7 @@ const AssetTable = () => {
                           </div>
                         </td>
                       </tr>
-                    ))}
+                    ))} */}
                 </tbody>
               </table>
             </div>
@@ -193,4 +232,4 @@ const AssetTable = () => {
   );
 };
 
-export default AssetTable;
+export default AssetDetail;

@@ -11,8 +11,22 @@ export const serviceEmployee = {
 export const serviceAsset = {
     //employee
     GET_ASSET_URL: "/asset/get",
-    GET_EMPLOYEE_AUTHEN_URL: "/employee/authen",
-    GET_EMPLOYEE_REGISTER_URL: "/employee/register",
+    GETBYID_ASSET_TYPE_URL: "/asset/getbyid",
+    INSERT_ASSET_URL: "/asset/insert",
+    UPDATE_ASSET_URL: "/asset/update",
+    GET_LIST_ASSET_STSTUS_URL: "/asset/get-list-status",
+}
+
+export const serviceAssetType = {
+    //employee
+    GET_ASSET_TYPE_URL: "/asset-type/get",
+    GET_LIST_ASSET_TYPE_URL: "/asset-type/get-list",
+}
+
+export const serviceAgency = {
+    //employee
+    GET_AGENCY_URL: "/agency/get",
+    GET_LIST_AGENCY_URL: "/agency/get-list",
 }
 
 

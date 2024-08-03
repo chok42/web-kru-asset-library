@@ -1,16 +1,21 @@
 import { useMemo, useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import iconSun from '../../images/icon/icon-sun.svg';
 import { ErrorMessage, Form, Formik } from 'formik';
 import * as Yup from 'yup'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import moment from 'moment';
+//components
+import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
+//images
+import iconSun from '../../images/icon/icon-sun.svg';
 //services
 import {AssetTypeJson,GetListAssetTypeService} from '../../services/asset-type.service';
 import {AgencyJson,GetListAgencyService,} from '../../services/agency.service';
 import ImageUploader from './ImageUploader';
-import {AssetStatusJson,GetListAssetStatusService,InsertAssetJson,InsertAssetService} from '../../services/asset.service';
+import {AssetJson, AssetStatusJson,GetByIdAssetService,GetListAssetStatusService, UpdateAssetJson, UpdateAssetService} from '../../services/asset.service';
+//constants
 import { getStorage } from '../../constants/constant';
-
+//common
+import { processEnv } from '../../common/axios';
 
 const AssetSchema = Yup.object().shape({
   asset_code: Yup.string()
@@ -30,28 +35,31 @@ const AssetSchema = Yup.object().shape({
     .required('รหัสอาคาร - ห้อง'),
 });
 
-const AssetInsert = () => {
+const AssetUpdate = () => {
+  const location = useLocation()
   const navigate = useNavigate()
+  const [asset, setAsset] = useState<AssetJson>();
   const [assetType, setAssetType] = useState<AssetTypeJson[]>([]);
   const [agency, setAgency] = useState<AgencyJson[]>([]);
   const [assetStatus, setAssetStatus] = useState<AssetStatusJson[]>([]);
   const [validateRepeat, setValidateRepeat] = useState<boolean>(false);
-
+  
+  const {id}:{id:string} = location.state ? location.state :{}
   const emp_id = getStorage('key')
 
   useMemo(async () => {
+    const asset = await GetByIdAssetService(id)
     const asset_type = await GetListAssetTypeService();
     const agency = await GetListAgencyService();
     const status = await GetListAssetStatusService();
+    setAsset(asset)
     setAssetType(asset_type ? asset_type : []);
     setAgency(agency ? agency : []);
     setAssetStatus(status ? status : []);
   }, []);
 
-  const onSubmitAsset = async (data: InsertAssetJson) => {
-    const resp = await InsertAssetService(data);
-    console.log('resp',resp);
-    
+  const onSubmitAsset = async (data: UpdateAssetJson) => {
+    const resp = await UpdateAssetService(data);
     if (resp === '200') {
       navigate(-1)
     } else if(resp === "404"){
@@ -65,19 +73,21 @@ const AssetInsert = () => {
         enableReinitialize
         validationSchema={AssetSchema}
         initialValues={{
-          asset_code: '',
-          asset_name: '',
-          asset_model: '',
-          asset_brand: '',
-          asset_description: '',
-          asset_price: 0,
-          asset_start_date: '',
-          asset_building_code: '',
-          asset_is_used: '',
-          asset_status_id: '',
-          agency_id: '',
-          asset_type_id: '',
-          asset_image: '',
+          asset_id: asset ? asset.asset_id : "",
+          asset_code: asset ? asset.asset_code : "",
+          asset_name: asset ? asset.asset_name : "",
+          asset_model: asset ? asset.asset_model : "",
+          asset_brand: asset ? asset.asset_brand : "",
+          asset_description: asset ? asset.asset_description : "",
+          asset_price: asset ? asset.asset_price : 0,
+          asset_start_date: asset ? moment(asset.asset_start_date).format('YYYY-MM-DD') : "",
+          asset_building_code: asset ? asset.asset_building_code : "",
+          asset_is_used: asset ? asset.asset_is_used : "",
+          asset_status_id: asset ? asset.asset_status_id : "",
+          agency_id: asset ? asset.agency_id : "",
+          asset_type_id: asset ? asset.asset_type_id : "",
+          asset_image:  "",
+          asset_image_old: asset ? `${processEnv}/${asset.asset_image}` : iconSun,
           emp_id: emp_id ? emp_id : '',
         }}
         onSubmit={onSubmitAsset}
@@ -105,9 +115,7 @@ const AssetInsert = () => {
                       <div className="h-30 w-30 rounded-full">
                         {
                           <img
-                            src={
-                              values.asset_image ? values.asset_image : iconSun
-                            }
+                            src={values.asset_image ? values.asset_image : values.asset_image_old}
                             alt="image"
                             height={'100px'}
                             width={'100px'}
@@ -157,7 +165,7 @@ const AssetInsert = () => {
                           รหัสครุภัณฑ์
                         </label>
                         <input
-                          id="asset_code"
+                          disabled
                           className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                           type="text"
                           name="asset_code"
@@ -187,7 +195,6 @@ const AssetInsert = () => {
                         </label>
                         <div className="relative">
                           <input
-                            id="asset_name"
                             className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                             type="text"
                             name="asset_name"
@@ -547,4 +554,4 @@ const AssetInsert = () => {
   );
 };
 
-export default AssetInsert;
+export default AssetUpdate;
