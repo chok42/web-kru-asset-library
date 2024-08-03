@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 import {
-  BsPencilSquare,
-  BsTrash,
-  BsInfoSquare,
   BsSearch,
   BsCaretLeft,
   BsCaretRight,
@@ -16,7 +13,6 @@ import { ProductIsUsed } from '../../types/product';
 import {
   AssetJson,
   AssetStatusJson,
-  DeleteAssetService,
   GetAssetService,
   GetListAssetStatusService,
 } from '../../services/asset.service';
@@ -212,53 +208,44 @@ const PublicAsset = () => {
             </div>
           </div>
           <div className="my-4">
-            {result.length > 0 ? (
-              <div className="grid grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xsm:grid-cols-1 gap-6 ">
-                {result.map((item, index) => (
-                  <div className="m-auto" key={index}>
-                    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-70">
-                      <div className="flex justify-center items-center flex-col border-b border-stroke  dark:border-strokedark p-2 bg-zinc-300 ">
-                        <div className="w-[150px] h-[150px]">
-                          {item && item.asset_image && (
-                            <img
-                              className="w-[150px] h-[150px]"
-                              src={`${processEnv}/${item.asset_image}`}
-                              style={{ objectFit: 'contain' }}
-                              alt="Product"
-                            />
-                          )}
-                        </div>
+            <div className="grid grid-cols-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xsm:grid-cols-1 gap-6 ">
+              {result.map((item, index) => (
+                <div className="m-auto" key={index}>
+                  <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark w-70">
+                    <div className="flex justify-center items-center flex-col border-b border-stroke  dark:border-strokedark p-2 bg-zinc-300 ">
+                      <div className="w-[150px] h-[150px]">
+                        {item && item.asset_image && (
+                          <img
+                            className="w-[150px] h-[150px]"
+                            src={`${processEnv}/${item.asset_image}`}
+                            style={{ objectFit: 'contain' }}
+                            alt="Product"
+                          />
+                        )}
                       </div>
-                      <div className="p-2">
-                        <div className="flex flex-col">
-                          <h3 className="font-medium text-black dark:text-white">
-                            {item.asset_code}
-                          </h3>
-                          <span className="mb-1.5 text-black dark:text-white">
-                            {item.asset_name}
-                          </span>{' '}
-                          <button className="text-sm hover:text-primary"></button>
-                          <span className="font-sm text-black dark:text-white">
-                            ห้อง {item.asset_building_code}
-                          </span>
-                          <span className="font-sm text-black dark:text-white">
-                            ราคา {item.asset_price}
-                          </span>
-                        </div>
+                    </div>
+                    <div className="p-2">
+                      <div className="flex flex-col">
+                        <h3 className="font-medium text-black dark:text-white">
+                          {item.asset_code}
+                        </h3>
+                        <span className="mb-1.5 text-black dark:text-white">
+                          {item.asset_name}
+                        </span>{' '}
+                        <button className="text-sm hover:text-primary"></button>
+                        <span className="font-sm text-black dark:text-white">
+                          ห้อง {item.asset_building_code}
+                        </span>
+                        <span className="font-sm text-black dark:text-white">
+                          ราคา {item.asset_price}
+                        </span>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="h-50 w-full flex justify-center items-center">
-                <h2 className="text-title-md2 font-semibold text-black dark:text-white">
-                  ไม่พบข้อมูล
-                </h2>
-              </div>
-            )}
+                </div>
+              ))}
+            </div>
           </div>
-
           {result.length > 0 && (
             <div className="w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ">
               <div className="flex flex-row items-center justify-end">
