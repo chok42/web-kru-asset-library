@@ -9,6 +9,7 @@ import { ProductIsUsed } from '../../types/product';
 import { AssetJson, GetAssetService, GetByIdAssetService } from '../../services/asset.service';
 //common
 import { processEnv } from '../../common/axios';
+import { toThaiDateString, toThaiDateTimeString } from '../../constants/format';
 
 
 export const proIsUsed: ProductIsUsed[] = [
@@ -42,35 +43,32 @@ const AssetDetail = () => {
   
   return (
     <>
-      <Breadcrumb pageName="Asset" />
+      <Breadcrumb pageName="Asset" defaultPageName='หน้าหลัก' />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
             <h4 className="text-xl font-semibold text-black dark:text-white">
               รายละเอียดครุภัณฑ์
             </h4>
-            <Link
-              to="/asset/insert"
-              className="inline-flex items-center justify-center gap-2.5 bg-primary py-2.5 px-6 text-center font-medium text-white hover:bg-opacity-90 lg:px-6 xl:px-6"
-            >
-              <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+          </div>
+          <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+            <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
+              <h4 className="text-xl font-semibold text-black dark:text-white">
+                รูปภาพ
+              </h4>
+            </div>
+            <div>
+              <div className="w-[250px] h-[250px]">
+                {asset && asset.asset_image && (
+                  <img
+                    className="w-[250px] h-[250px]"
+                    src={`${processEnv}/${asset.asset_image}`}
+                    style={{objectFit:'contain'}}
+                    alt="Product"
                   />
-                </svg>
-              </span>
-              ลงทะเบียนครุภัณฑ์
-            </Link>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -84,29 +82,6 @@ const AssetDetail = () => {
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                       รายละเอียด
                     </th>
-                    {/* <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      รหัสครุภัณฑ์
-                    </th>
-                    <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ชื่อครุภัณฑ์
-                    </th>
-                    <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ประเภท
-                    </th>
-                    <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                      ราคา
-                    </th>
-                    <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                      อาคาร/ห้อง
-                    </th>
-
-                    <th className="min-w-[50px]  py-4 px-4 font-medium text-black dark:text-white">
-                      สถานะ
-                    </th>
-                    <th className="min-w-[120px]  py-4 px-4 font-medium text-black dark:text-white">
-                      การใช้งาน
-                    </th>
-                    <th className="py-4 px-4 font-medium text-black dark:text-white"></th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -125,7 +100,7 @@ const AssetDetail = () => {
                   <tr>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-lg text-black dark:text-white">
-                      ชื่อครุภัณฑ์
+                        ชื่อครุภัณฑ์
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -136,8 +111,18 @@ const AssetDetail = () => {
                   </tr>
                   <tr>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">ราคา</p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        ฿{asset?.asset_price}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-lg text-black dark:text-white">
-                      ประเภท
+                        ประเภท
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -146,87 +131,97 @@ const AssetDetail = () => {
                       </p>
                     </td>
                   </tr>
-                  {/* {result.length > 0 &&
-                    result.map((item, key) => (
-                      <tr key={key}>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-sm text-black dark:text-white">
-                            {item.asset_code}
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark">
-                          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                            <div className="w-[50px] h-[50px] rounded-md">
-                              <img
-                                src={`${processEnv}/${item.asset_image}`}
-                                alt="Product"
-                              />
-                            </div>
-                            <p className="text-sm text-black dark:text-white">
-                              {item.asset_name}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-sm text-black dark:text-white">
-                            {item.asset_type_name}
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p
-                            className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium bg-success text-success`}
-                          >
-                            ฿{item.asset_price}
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-sm text-black dark:text-white">
-                            {item.asset_building_code}
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-sm text-black dark:text-white">
-                            {item.asset_status_name}
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p className="text-sm text-black dark:text-white">
-                            {
-                              proIsUsed.find(
-                                (fd) => fd.id === item.asset_is_used,
-                              )?.name
-                            }
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <div className="flex items-center space-x-3.5">
-                          <button
-                            >
-                              <BsInfoSquare className="hover:text-fuchsia-600" />
-                            </button>
-                            <button
-                            >
-                              <BsTrash className="hover:text-danger" />
-                            </button>
-                            <button
-                              type='button'
-                              onClick={() =>
-                                navigate(`/asset/update`, {
-                                  state: { id: item.asset_id },
-                                })
-                              }
-                            >
-                              <BsPencilSquare className="hover:text-warning" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))} */}
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        สถาบัน
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {asset?.agency_name}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        อาคาร/ห้อง
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {asset?.asset_building_code}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        วันที่ใช้งาน
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {toThaiDateString(asset?.asset_start_date || '')}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        วันที่เพิ่มข้อมูล
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {toThaiDateTimeString(asset?.asset_creation_date || '')}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        สถานะ
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {asset?.asset_status_name}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-lg text-black dark:text-white">
+                        การใช้งาน
+                      </p>
+                    </td>
+                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                      <p className="text-sm text-black dark:text-white">
+                        {
+                          proIsUsed.find((fd) => fd.id === asset?.asset_is_used)
+                            ?.name
+                        }
+                      </p>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
+              <div className="flex justify-end gap-4.5 my-10">
+                      <button
+                        className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                        type="button"
+                        onClick={() => navigate(-1)}
+                      >
+                        ย้อนกลับ
+                      </button>
+                    </div>
             </div>
           </div>
+          
         </div>
+        
       </div>
     </>
   );

@@ -43,7 +43,7 @@ const AssetUpdate = () => {
   const [agency, setAgency] = useState<AgencyJson[]>([]);
   const [assetStatus, setAssetStatus] = useState<AssetStatusJson[]>([]);
   const [validateRepeat, setValidateRepeat] = useState<boolean>(false);
-  
+
   const {id}:{id:string} = location.state ? location.state :{}
   const emp_id = getStorage('key')
 
@@ -68,7 +68,7 @@ const AssetUpdate = () => {
   };
   return (
     <>
-      <Breadcrumb pageName="Asset Insert" />
+      <Breadcrumb pageName="Asset Insert" defaultPageName='หน้าหลัก' />
       <Formik
         enableReinitialize
         validationSchema={AssetSchema}
@@ -534,13 +534,13 @@ const AssetUpdate = () => {
                         type="button"
                         onClick={() => navigate(-1)}
                       >
-                        Cancel
+                        ย้อนกลับ
                       </button>
                       <button
                         className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                         type="submit"
                       >
-                        Save
+                        บันทึก
                       </button>
                     </div>
                   </div>

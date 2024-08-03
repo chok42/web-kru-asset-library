@@ -35,6 +35,14 @@ export interface AssetJson {
   emp_id: string;
 }
 
+export interface AssetJsonSendData {
+  data:AssetJson[]
+  totalCount: number;
+  totalPages: number;
+  status: string;
+  message: string;
+  detail: string;
+}
 //asset
 //get
 export const GetAssetService = async (page = 1,pageSize = 10,search = '',asset_is_used = '',asset_status_id = '',agency_id = '',asset_type_id = '') => {
@@ -49,11 +57,10 @@ export const GetAssetService = async (page = 1,pageSize = 10,search = '',asset_i
         asset_type_id: asset_type_id,
       };
       const resp = await axios.post(serviceAsset.GET_ASSET_URL,body);
-      const json = resp.data
+      const json:AssetJsonSendData = resp.data
       switch (json.status) {
         case '200':        
-         const jsonData:AssetJson[] = json.data  
-          return jsonData
+          return json
         case '400':
           console.log('WARNING:', json.detail);
           return 
@@ -92,7 +99,6 @@ export interface InsertAssetJson {
 export const InsertAssetService = async (data:InsertAssetJson) => {
   try {
     const body = {...data};
-    console.log('body',body);
     
     const resp = await axios.post(serviceAsset.INSERT_ASSET_URL,body);
     const json = resp.data
@@ -107,6 +113,7 @@ export const InsertAssetService = async (data:InsertAssetJson) => {
   }
 };
 
+//update
 export interface UpdateAssetJson {
   asset_id:string,
   asset_code: string;
@@ -129,21 +136,35 @@ export interface UpdateAssetJson {
 export const UpdateAssetService = async (data:UpdateAssetJson) => {
   try {
     const body = {...data};
-    console.log('body',body);
     
     const resp = await axios.post(serviceAsset.UPDATE_ASSET_URL,body);
-    if (resp.status === 200) {
       const json = resp.data;
       if (json) {
         return json.status;
       }
-    }
   } catch (error: any) {
     console.log('ERROR:',error.message);
     return  '500'
   }
 };
 
+//delete
+export const DeleteAssetService = async (id:string) => {
+  try {
+    const body = {
+      asset_id:id
+    };
+    
+    const resp = await axios.post(serviceAsset.DELETE_ASSET_URL, body);
+    const json = resp.data;
+    if (json) {
+      return json.status;
+    }
+  } catch (error: any) {
+    console.log('ERROR:',error.message);
+    return  '500'
+  }
+};
 //asset status
 //get
 export interface AssetStatusJson {

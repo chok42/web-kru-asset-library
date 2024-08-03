@@ -83,9 +83,10 @@ export default function ImageUploader({onChange = (base64:unknown) => base64}) {
           </svg>
         </span>
         <p>
-          <span className="text-primary">Click to upload</span> or drag and drop
+          <span className="text-primary">คลิกเพื่ออัพโหลด</span> หรือ ลากและวาง
+
         </p>   
-        <p className="mt-1.5">SVG, PNG, JPG</p>
+        <p className="mt-1.5">PNG, JPG</p>
         {reqTypeFile && <p className="mt-1.5 text-red-500">ไม่รองรับ ประเภทไฟล์ดังกล่าว</p>}
         <p>(max, 800 X 800px)</p>
         

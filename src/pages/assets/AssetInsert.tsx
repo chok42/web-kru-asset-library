@@ -50,17 +50,16 @@ const AssetInsert = () => {
 
   const onSubmitAsset = async (data: InsertAssetJson) => {
     const resp = await InsertAssetService(data);
-    console.log('resp',resp);
-    
     if (resp === '200') {
       navigate(-1)
     } else if(resp === "404"){
       setValidateRepeat(true)
     }
   };
+  
   return (
     <>
-      <Breadcrumb pageName="Asset Insert" />
+      <Breadcrumb pageName="Asset Insert" defaultPageName='หน้าหลัก' />
       <Formik
         enableReinitialize
         validationSchema={AssetSchema}
@@ -527,13 +526,13 @@ const AssetInsert = () => {
                         type="button"
                         onClick={() => navigate(-1)}
                       >
-                        Cancel
+                        ย้อนกลับ
                       </button>
                       <button
                         className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
                         type="submit"
                       >
-                        Save
+                        บันทึก
                       </button>
                     </div>
                   </div>

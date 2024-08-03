@@ -10,7 +10,7 @@ export interface AssetTypeBody {
 }
 
 export interface AssetTypeJson {
-  asset_type_id: number;
+  asset_type_id: string;
   asset_type_name: string;
 }
 

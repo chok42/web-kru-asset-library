@@ -18,7 +18,6 @@ const SignIn: React.FC = () => {
 
   const onSubmitLogin  = async (username:string,password:string) => {
     const resp = await EmployeeLoginService(username, password);
-    console.log('resp',resp);
     
     if (resp === '200') {
       window.location.reload()

@@ -1,46 +1,82 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BsPencilSquare,BsTrash,BsInfoSquare } from "react-icons/bs";
+import { BsPencilSquare, BsTrash, BsInfoSquare } from 'react-icons/bs';
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //types
 import { ProductIsUsed } from '../../types/product';
 //services
-import { AssetJson, GetAssetService } from '../../services/asset.service';
+import {
+  AssetJson,
+  DeleteAssetService,
+  GetAssetService,
+} from '../../services/asset.service';
 //common
 import { processEnv } from '../../common/axios';
-
+import Swal from 'sweetalert2';
 
 export const proIsUsed: ProductIsUsed[] = [
   {
-    id: "1",
+    id: '1',
     name: 'ใช้งาน',
   },
   {
-    id: "0",
+    id: '0',
     name: 'ไม่ได้ใช้งาน',
   },
 ];
 
-
-
 const AssetTable = () => {
-  const navigate = useNavigate()
-  const [result, setResult] = useState<AssetJson[]>([])
+  const navigate = useNavigate();
+  const [result, setResult] = useState<AssetJson[]>([]);
   useEffect(() => {
-    fatchData()
-  }, [])
+    fatchData();
+  }, []);
 
   const fatchData = async () => {
-      const resp = await GetAssetService()
-      if(resp && resp.length > 0){
-        setResult(resp)
+    const resp = await GetAssetService();
+    if (resp && resp.data.length > 0) {
+      setResult(resp.data);
+    }
+  };
+
+  const onClickDelete = (asset_id: string, asset_code: string) => {
+    Swal.fire({
+      title: 'คุณแน่ใจไหม?',
+      text: `หากคุณลบ ${asset_code} คุณจะไม่สามารถย้อนกลับสิ่งนี้ได้!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: `ยืนยัน`,
+      cancelButtonText: `ยกเลิก`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await DeleteAssetService(asset_id);
+        if (res === '200') {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'ลบข้อมูลสำเร็จ',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          await fatchData();
+        } else if (res === '404') {
+          Swal.fire({
+            title: 'แจ้งเตือน',
+            text: 'ไม่พบรายการดังกล่าว!',
+            icon: 'question',
+            confirmButtonColor: '#3085d6',
+          });
+        }
       }
-  }
-  
+    });
+  };
+
   return (
     <>
-      <Breadcrumb pageName="Asset" />
+      <Breadcrumb pageName="Asset" defaultPageName="หน้าหลัก" />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
@@ -112,11 +148,15 @@ const AssetTable = () => {
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark">
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                            <div className="w-[50px] h-[50px] rounded-md">
-                              <img
-                                src={`${processEnv}/${item.asset_image}`}
-                                alt="Product"
-                              />
+                            <div className="w-[50px] h-[50px]">
+                              {item && item.asset_image && (
+                                <img
+                                  className="w-[50px] h-[50px]"
+                                  src={`${processEnv}/${item.asset_image}`}
+                                  style={{ objectFit: 'contain' }}
+                                  alt="Product"
+                                />
+                              )}
                             </div>
                             <p className="text-sm text-black dark:text-white">
                               {item.asset_name}
@@ -166,9 +206,7 @@ const AssetTable = () => {
                             >
                               <BsInfoSquare className="hover:text-fuchsia-600" />
                             </button>
-                            <button>
-                              <BsTrash className="hover:text-danger" />
-                            </button>
+
                             <button
                               type="button"
                               onClick={() =>
@@ -178,6 +216,13 @@ const AssetTable = () => {
                               }
                             >
                               <BsPencilSquare className="hover:text-warning" />
+                            </button>
+                            <button
+                              onClick={() =>
+                                onClickDelete(item.asset_id, item.asset_code)
+                              }
+                            >
+                              <BsTrash className="hover:text-danger" />
                             </button>
                           </div>
                         </td>

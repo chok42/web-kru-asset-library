@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
+//common
 import Loader from './common/Loader';
+//components
 import PageTitle from './components/PageTitle';
+//layout
+import AdminLayout from './layout/AdminLayout';
+import PublicLayout from './layout/PublicLayout';
+//pages Authentication
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Calendar from './pages/Calendar';
@@ -15,13 +21,16 @@ import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
-import AdminLayout from './layout/AdminLayout';
-import PublicLayout from './layout/PublicLayout';
-import { EmployeeAuthenService } from './services/employee.service';
+//pages assets
 import AssetTable from './pages/assets/AssetTable';
 import AssetInsert from './pages/assets/AssetInsert';
 import AssetUpdate from './pages/assets/AssetUpdate';
 import AssetDetail from './pages/assets/AssetDetail';
+//services
+import { EmployeeAuthenService } from './services/employee.service';
+import PublicAsset from './pages/public-asset/PublicAsset';
+import { getStorage, removeStorage } from './constants/constant';
+import PublicMain from './pages/public-main/PublicMain';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,22 +41,23 @@ function App() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // useEffect(() => {
-  //   setTimeout(() => setLoading(false), 1000);
-  // }, []);
-
   useEffect(() => {
     fetchData()
   }, []);
 
   const fetchData = async () => {
-    const resp = await EmployeeAuthenService();
-    
-    setLoading(false);
-    if (resp === '200') {
-      setVisible(false);
-      return;
+    const key = getStorage('key');
+    if (key) {
+      const resp = await EmployeeAuthenService();
+      if (resp === '200') {
+        setLoading(false);
+        setVisible(false);
+        return;
+      } else if (resp === '404') {
+        removeStorage([]);
+      }
     }
+    setLoading(false);
     setVisible(true);
   };
 
@@ -56,7 +66,43 @@ function App() {
   ) : visible ? (
     <PublicLayout>
       <Routes>
-        <Route index element={<></>} />
+      <Route
+          index
+          element={
+            <>    
+            <PageTitle title="Main" />
+              <PublicMain />
+            </>
+          }
+        />  
+
+        <Route
+          path="/asset"
+          element={
+            <>
+              <PageTitle title="Asset" />
+              <PublicAsset />
+            </>
+          }
+        />
+        <Route
+          path="/library"
+          element={
+            <>
+              <PageTitle title="Library " />
+              <PublicAsset />
+            </>
+          }
+        />        
+        <Route
+          path="/kru"
+          element={
+            <>
+              <PageTitle title="Kru" />
+              <PublicAsset />
+            </>
+          }
+        />
         <Route
           path="/login"
           element={
@@ -66,6 +112,7 @@ function App() {
             </>
           }
         />
+
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </PublicLayout>
@@ -74,6 +121,15 @@ function App() {
       <Routes>
         <Route
           index
+          element={
+            <>
+              <PageTitle title="Asset Tables " />
+              <AssetTable />
+            </>
+          }
+        />        
+        <Route
+          path='eommerce'
           element={
             <>
               <PageTitle title="eCommerce Dashboard " />
@@ -126,8 +182,17 @@ function App() {
             </>
           }
         />
+                <Route
+          path="/agency"
+          element={
+            <>
+              <PageTitle title="Profile " />
+              <Profile />
+            </>
+          }
+        />
         <Route
-          path="/profile"
+          path="/signup"
           element={
             <>
               <PageTitle title="Profile " />
