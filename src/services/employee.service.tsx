@@ -147,8 +147,8 @@ export const GetEmployeeService = async (
 
 export const GetByIdEmployeeService = async (id: string) => {
   try {
-    const body: { asset_id: string } = {
-      asset_id: id,
+    const body = {
+      emp_id: id,
     };
     const resp = await axios.post(serviceEmployee.GETBYID_EMPLOYEE_URL, body);
     const json = resp.data;
@@ -168,7 +168,7 @@ export const GetByIdEmployeeService = async (id: string) => {
     return;
   }
 };
-export interface InsertAssetJson {
+export interface InsertEmployeeJson {
   emp_username: string;
   emp_password: string;
   emp_firstname: string;
@@ -180,7 +180,7 @@ export interface InsertAssetJson {
 }
 
 //insert
-export const InsertEmployeeService = async (data: InsertAssetJson) => {
+export const InsertEmployeeService = async (data: InsertEmployeeJson) => {
   try {
     const body = { ...data };
 
@@ -197,7 +197,7 @@ export const InsertEmployeeService = async (data: InsertAssetJson) => {
 };
 
 //update
-export interface UpdateAssetJson {
+export interface UpdateEmployeeJson {
   emp_id: string;
   emp_username: string;
   emp_password: string;
@@ -209,7 +209,7 @@ export interface UpdateAssetJson {
   role_id: string;
 }
 
-export const UpdateEmployeeService = async (data: UpdateAssetJson) => {
+export const UpdateEmployeeService = async (data: UpdateEmployeeJson) => {
   try {
     const body = { ...data };
 
@@ -228,7 +228,7 @@ export const UpdateEmployeeService = async (data: UpdateAssetJson) => {
 export const DeleteEmployeeService = async (id: string) => {
   try {
     const body = {
-      asset_id: id,
+      emp_id: id,
     };
 
     const resp = await axios.post(serviceEmployee.DELETE_EMPLOYEE_URL, body);

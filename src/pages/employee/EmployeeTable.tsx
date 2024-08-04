@@ -36,7 +36,7 @@ export const proIsUsed: ProductIsUsed[] = [
 
 const EmployeeTable = () => {
   const navigate = useNavigate();
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(8);
   const [search, setSearch] = useState<string>('');
   const [result, setResult] = useState<EmployeeJson[]>([]);
@@ -65,8 +65,7 @@ const EmployeeTable = () => {
   };
 
 
-  const indexOfItem = (index: number) =>
-    page * pageSize - pageSize + (index + 1);
+  const indexOfItem = (index: number) =>  page * pageSize - pageSize + (index + 1);
 
   const onClickDelete = (asset_id: string, asset_code: string) => {
     Swal.fire({
