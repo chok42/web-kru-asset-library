@@ -15,10 +15,10 @@ import { getStorage } from '../../constants/constant';
 const AssetSchema = Yup.object().shape({
   asset_code: Yup.string()
     .max(50, 'จำนวนตัวอักษรมากกว่า 100 ตัวอักษร')
-    .required('กรุณากรอกรหัสครุภัณฑ์'),
+    .required('กรุณากรอกรหัสวัสดุครุภัณฑ์'),
   asset_name: Yup.string()
     .max(250, 'จำนวนตัวอักษรมากกว่า 250 ตัวอักษร')
-    .required('กรุณากรอกชื่อครุภัณฑ์'),
+    .required('กรุณากรอกชื่อวัสดุครุภัณฑ์'),
   asset_model: Yup.string()
     .max(100, 'จำนวนตัวอักษรมากกว่า 100 ตัวอักษร')
     .required('กรุณากรอกรุ่น'),
@@ -59,7 +59,7 @@ const AssetInsert = () => {
   
   return (
     <>
-      <Breadcrumb pageName="Asset Insert" defaultPageName='หน้าหลัก' />
+      <Breadcrumb pageName="ลงทะเบียนวัสดุครุภัณฑ์" defaultPageName='หน้าหลัก' />
       <Formik
         enableReinitialize
         validationSchema={AssetSchema}
@@ -143,7 +143,7 @@ const AssetInsert = () => {
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                      เพิ่มข้อมูลครุภัณฑ์
+                      เพิ่มข้อมูลวัสดุครุภัณฑ์
                     </h3>
                   </div>
                   <div className="p-7">
@@ -153,7 +153,7 @@ const AssetInsert = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="phoneNumber"
                         >
-                          รหัสครุภัณฑ์
+                          รหัสวัสดุครุภัณฑ์
                         </label>
                         <input
                           id="asset_code"
@@ -167,7 +167,7 @@ const AssetInsert = () => {
                         />
                         {validateRepeat && (
                           <p className="mt-3 block text-sm font-medium text-danger ">
-                            รหัสครุภัณฑ์ซ้ำ
+                            รหัสวัสดุครุภัณฑ์ซ้ำ
                           </p>
                         )}
 
@@ -182,7 +182,7 @@ const AssetInsert = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
-                          ชื่อครุภัณฑ์
+                          ชื่อวัสดุครุภัณฑ์
                         </label>
                         <div className="relative">
                           <input

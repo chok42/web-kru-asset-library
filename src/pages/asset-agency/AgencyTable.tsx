@@ -44,8 +44,7 @@ const AgencyTable = () => {
     setSearch(text);
   };
 
-  const indexOfItem = (index: number) =>
-    page * pageSize - pageSize + (index + 1);
+  const indexOfItem = (index: number) => page * pageSize - pageSize + (index + 1);
 
   const onSubmitInsert = async () => {
     const { value: text } = await Swal.fire({
@@ -156,12 +155,12 @@ const AgencyTable = () => {
 
   return (
     <>
-      <Breadcrumb pageName="ประเภทครุภัณฑ์" defaultPageName="หน้าหลัก" />
+      <Breadcrumb pageName="สถาบัน" defaultPageName="หน้าหลัก" />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
             <h4 className="text-xl font-semibold text-black dark:text-white">
-              ตารางประเภทครุภัณฑ์
+              ตารางสถาบัน
             </h4>
             {totalCount <= 8 && (
               <button
@@ -200,7 +199,7 @@ const AgencyTable = () => {
                       ลำดับ
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ประเภทครุภัณฑ์
+                       สถาบัน
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"></th>
                   </tr>

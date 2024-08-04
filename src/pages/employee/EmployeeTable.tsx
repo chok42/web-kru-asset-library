@@ -1,20 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BsPencilSquare, BsTrash, BsInfoSquare, BsCaretRight, BsCaretLeft } from 'react-icons/bs';
+import {
+  BsPencilSquare,
+  BsTrash,
+  BsInfoSquare,
+  BsCaretRight,
+  BsCaretLeft,
+  BsSearch,
+} from 'react-icons/bs';
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //types
 import { ProductIsUsed } from '../../types/product';
 //services
 import {
-  AssetJson,
   DeleteAssetService,
-  GetAssetService,
 } from '../../services/asset.service';
-//common
-import { processEnv } from '../../common/axios';
 import Swal from 'sweetalert2';
 import ReactPaginate from 'react-paginate';
+import {
+  EmployeeJson,
+  GetEmployeeService,
+} from '../../services/employee.service';
 
 export const proIsUsed: ProductIsUsed[] = [
   {
@@ -32,19 +39,19 @@ const EmployeeTable = () => {
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(8);
   const [search, setSearch] = useState<string>('');
-  const [result, setResult] = useState<AssetJson[]>([]);
+  const [result, setResult] = useState<EmployeeJson[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     fatchData();
-  }, [page, pageSize, search,]);
+  }, [page, pageSize, search]);
 
   const fatchData = async () => {
-    const resp = await GetAssetService();
+    const resp = await GetEmployeeService();
     if (resp && resp.data.length > 0) {
       setResult(resp.data);
-      setTotalCount(resp.totalCount)
-      setTotalPages(resp.totalPages)
+      setTotalCount(resp.totalCount);
+      setTotalPages(resp.totalPages);
     }
   };
 
@@ -53,6 +60,13 @@ const EmployeeTable = () => {
     setPage(newOffset);
   };
 
+  const handleChangeSearch = (text: string) => {
+    setSearch(text);
+  };
+
+
+  const indexOfItem = (index: number) =>
+    page * pageSize - pageSize + (index + 1);
 
   const onClickDelete = (asset_id: string, asset_code: string) => {
     Swal.fire({
@@ -88,8 +102,6 @@ const EmployeeTable = () => {
     });
   };
 
-
-
   return (
     <>
       <Breadcrumb pageName="ผู้ใช้งาน" defaultPageName="หน้าหลัก" />
@@ -122,92 +134,84 @@ const EmployeeTable = () => {
               ลงทะเบียน
             </Link>
           </div>
+          <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
+            <div className="relative flex justify-between">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => {
+                  const search = e.target.value;
+                  handleChangeSearch(search);
+                }}
+                placeholder="ค้นหาชื่อวัสดุครุภัณฑ์ "
+                className="bg-transparent  text-black focus:outline-none dark:text-white "
+              />
 
+              <button>
+                <BsSearch className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
+              </button>
+            </div>
+          </div>
           <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="max-w-full overflow-x-auto">
               <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                    <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      รหัสครุภัณฑ์
+                    <th className="min-w-[40px] py-4 px-4 font-medium text-black dark:text-white">
+                      ลำดับ
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ชื่อครุภัณฑ์
+                      ชื่อจริง นามสกุล
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ประเภท
+                      เบอร์โทรศัพท์
                     </th>
                     <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                      ราคา
+                      อีเมล
                     </th>
-                    <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
-                      อาคาร/ห้อง
-                    </th>
-
                     <th className="min-w-[50px]  py-4 px-4 font-medium text-black dark:text-white">
-                      สถานะ
+                      การใช้งาน
                     </th>
                     <th className="min-w-[120px]  py-4 px-4 font-medium text-black dark:text-white">
-                      การใช้งาน
+                      บทบาท
                     </th>
                     <th className="py-4 px-4 font-medium text-black dark:text-white"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {result.length > 0 &&
-                    result.map((item, key) => (
-                      <tr key={key}>
+                    result.map((item, index) => (
+                      <tr key={index}>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-sm text-black dark:text-white">
-                            {item.asset_code}
+                            {indexOfItem(index)}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark">
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                            <div className="w-[50px] h-[50px]">
-                              {item && item.asset_image && (
-                                <img
-                                  className="w-[50px] h-[50px]"
-                                  src={`${processEnv}/${item.asset_image}`}
-                                  style={{ objectFit: 'contain' }}
-                                  alt="Product"
-                                />
-                              )}
-                            </div>
                             <p className="text-sm text-black dark:text-white">
-                              {item.asset_name}
+                              {item.emp_username}
                             </p>
                           </div>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-sm text-black dark:text-white">
-                            {item.asset_type_name}
-                          </p>
-                        </td>
-                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                          <p
-                            className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium bg-success text-success`}
-                          >
-                            ฿{item.asset_price}
+                            {`${item.emp_firstname} ${item.emp_lastname}`}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-sm text-black dark:text-white">
-                            {item.asset_building_code}
+                            {item.emp_phone}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-sm text-black dark:text-white">
-                            {item.asset_status_name}
+                            {item.emp_email}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-sm text-black dark:text-white">
-                            {
-                              proIsUsed.find(
-                                (fd) => fd.id === item.asset_is_used,
-                              )?.name
-                            }
+                            {item.emp_status}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -216,7 +220,7 @@ const EmployeeTable = () => {
                               type="button"
                               onClick={() =>
                                 navigate(`/asset/detail`, {
-                                  state: { id: item.asset_id },
+                                  state: { id: item.emp_id },
                                 })
                               }
                             >
@@ -227,7 +231,7 @@ const EmployeeTable = () => {
                               type="button"
                               onClick={() =>
                                 navigate(`/asset/update`, {
-                                  state: { id: item.asset_id },
+                                  state: { id: item.emp_id },
                                 })
                               }
                             >
@@ -235,7 +239,7 @@ const EmployeeTable = () => {
                             </button>
                             <button
                               onClick={() =>
-                                onClickDelete(item.asset_id, item.asset_code)
+                                onClickDelete(item.emp_id, item.emp_username)
                               }
                             >
                               <BsTrash className="hover:text-danger" />

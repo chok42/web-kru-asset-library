@@ -1,6 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BsPencilSquare, BsTrash, BsInfoSquare, BsCaretRight, BsCaretLeft } from 'react-icons/bs';
+import {
+  BsPencilSquare,
+  BsTrash,
+  BsInfoSquare,
+  BsCaretRight,
+  BsCaretLeft,
+  BsSearch,
+} from 'react-icons/bs';
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //types
@@ -8,13 +15,23 @@ import { ProductIsUsed } from '../../types/product';
 //services
 import {
   AssetJson,
+  AssetStatusJson,
   DeleteAssetService,
   GetAssetService,
+  GetListAssetStatusService,
 } from '../../services/asset.service';
 //common
 import { processEnv } from '../../common/axios';
 import Swal from 'sweetalert2';
 import ReactPaginate from 'react-paginate';
+import {
+  AssetTypeJson,
+  GetListAssetTypeService,
+} from '../../services/asset-type.service';
+import {
+  AgencyJson,
+  GetListAgencyService,
+} from '../../services/agency.service';
 
 export const proIsUsed: ProductIsUsed[] = [
   {
@@ -32,27 +49,63 @@ const AssetTable = () => {
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(8);
   const [search, setSearch] = useState<string>('');
+  const [selAssetType, setSelectAssetType] = useState<string>('');
+  const [selAgency, setSelectAgency] = useState<string>('');
+  const [selAssetStatus, setSelectAssetStatus] = useState<string>('');
+  const [selAssetIsUse, setSelectAssetIsUse] = useState<string>('');
+  const [assetType, setAssetType] = useState<AssetTypeJson[]>([]);
+  const [agency, setAgency] = useState<AgencyJson[]>([]);
+  const [assetStatus, setAssetStatus] = useState<AssetStatusJson[]>([]);
   const [result, setResult] = useState<AssetJson[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
     fatchData();
-  }, [page, pageSize, search,]);
+  }, [
+    page,
+    pageSize,
+    search,
+    selAssetIsUse,
+    selAssetStatus,
+    selAgency,
+    selAssetType,
+  ]);
 
   const fatchData = async () => {
-    const resp = await GetAssetService();
-    if (resp && resp.data.length > 0) {
+    const resp = await GetAssetService(
+      page,
+      pageSize,
+      search,
+      selAssetIsUse,
+      selAssetStatus,
+      selAgency,
+      selAssetType,
+    );
+    if (resp && resp.data.length >= 0) {
       setResult(resp.data);
-      setTotalCount(resp.totalCount)
-      setTotalPages(resp.totalPages)
+      setTotalCount(resp.totalCount);
+      setTotalPages(resp.totalPages);
     }
   };
+
+  useMemo(async () => {
+    const asset_type = await GetListAssetTypeService();
+    const agency = await GetListAgencyService();
+    const status = await GetListAssetStatusService();
+    setAssetType(asset_type ? asset_type : []);
+    setAgency(agency ? agency : []);
+    setAssetStatus(status ? status : []);
+  }, []);
 
   const handlePageClick = (event: any) => {
     const newOffset = event.selected + 1;
     setPage(newOffset);
   };
 
+  const handleChangeSearch = (text: string) => {
+    setSearch(text);
+  };
 
   const onClickDelete = (asset_id: string, asset_code: string) => {
     Swal.fire({
@@ -88,16 +141,14 @@ const AssetTable = () => {
     });
   };
 
-
-
   return (
     <>
-      <Breadcrumb pageName="Asset" defaultPageName="หน้าหลัก" />
+      <Breadcrumb pageName="วัสดุครุภัณฑ์" defaultPageName="หน้าหลัก" />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
             <h4 className="text-xl font-semibold text-black dark:text-white">
-              ตารางครุภัณฑ์
+              ตารางวัสดุครุภัณฑ์
             </h4>
             <Link
               to="/asset/insert"
@@ -119,20 +170,138 @@ const AssetTable = () => {
                   />
                 </svg>
               </span>
-              ลงทะเบียนครุภัณฑ์
+              ลงทะเบียน
             </Link>
           </div>
+          <div className="grid grid-cols-4 gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xsm:grid-cols-1">
+            <div className="py-1 px-1 ">
+              <div className="relative flex justify-between">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => {
+                    const search = e.target.value;
+                    handleChangeSearch(search);
+                  }}
+                  placeholder="ค้นหาวัสดุครุภัณฑ์ "
+                  className="bg-transparent  text-black focus:outline-none dark:text-white "
+                />
 
+                <button>
+                  <BsSearch className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
+                </button>
+              </div>
+            </div>
+            <div className="py-1 px-1 ">
+              <select
+                className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                name="asset_type_id"
+                value={selAssetType}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSelectAssetType(value);
+                }}
+              >
+                <option value="" className="text-body dark:text-bodydark">
+                  ประเภท
+                </option>
+                {assetType.length > 0 &&
+                  assetType.map((res, index) => (
+                    <option
+                      key={index}
+                      value={res.asset_type_id}
+                      className="text-body dark:text-bodydark"
+                    >
+                      {res.asset_type_name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="py-1 px-1 ">
+              <select
+                className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                name="asset_type_id"
+                value={selAgency}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSelectAgency(value);
+                }}
+              >
+                <option value="" className="text-body dark:text-bodydark">
+                  สถาบัน
+                </option>
+                {agency.length > 0 &&
+                  agency.map((res, index) => (
+                    <option
+                      key={index}
+                      value={res.agency_id}
+                      className="text-body dark:text-bodydark"
+                    >
+                      {res.agency_name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="py-1 px-1 ">
+              <select
+                className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                name="asset_type_id"
+                value={selAssetStatus}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSelectAssetStatus(value);
+                }}
+              >
+                <option value="" className="text-body dark:text-bodydark">
+                  สถานะ
+                </option>
+                {assetStatus.length > 0 &&
+                  assetStatus.map((res, index) => (
+                    <option
+                      key={index}
+                      value={res.asset_status_id}
+                      className="text-body dark:text-bodydark"
+                    >
+                      {res.asset_status_name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="py-1 px-1 ">
+              <select
+                className="w-full rounded border border-stroke bg-gray py-2 px-2 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                value={selAssetIsUse}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSelectAssetIsUse(value);
+                }}
+              >
+                <option value="" className="text-body dark:text-bodydark">
+                  การใช้งาน
+                </option>
+                {proIsUsed.length > 0 &&
+                  proIsUsed.map((res, index) => (
+                    <option
+                      key={index}
+                      value={res.id}
+                      className="text-body dark:text-bodydark"
+                    >
+                      {res.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
           <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="max-w-full overflow-x-auto">
               <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-gray-2 text-left dark:bg-meta-4">
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      รหัสครุภัณฑ์
+                      รหัสวัสดุครุภัณฑ์
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ชื่อครุภัณฑ์
+                      ชื่อวัสดุครุภัณฑ์
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                       ประเภท

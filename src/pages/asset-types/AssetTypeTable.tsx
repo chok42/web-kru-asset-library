@@ -55,9 +55,9 @@ const AssetTypeTable = () => {
 
   const onSubmitInsert = async () => {
     const { value: text } = await Swal.fire({
-      title: 'ประเภทครุภัณฑ์',
+      title: 'ประเภทวัสดุครุภัณฑ์',
       input: 'text',
-      inputPlaceholder: 'กรอกชื่อประเภทครุภัณฑ์',
+      inputPlaceholder: 'กรอกประเภทวัสดุครุภัณฑ์',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -91,10 +91,10 @@ const AssetTypeTable = () => {
     asset_type_name: string,
   ) => {
     const { value: text } = await Swal.fire({
-      title: 'ประเภทครุภัณฑ์',
+      title: 'ประเภทวัสดุครุภัณฑ์',
       inputValue: asset_type_name,
       input: 'text',
-      inputPlaceholder: 'กรอกชื่อประเภทครุภัณฑ์',
+      inputPlaceholder: 'กรอกประเภทวัสดุครุภัณฑ์',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -216,10 +216,10 @@ const AssetTypeTable = () => {
                 <thead>
                   <tr className="bg-gray-2 text-left dark:bg-meta-4">
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      รหัสประเภทครุภัณฑ์
+                      รหัสประเภทวัสดุครุภัณฑ์
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                      ประเภทครุภัณฑ์
+                      ประเภทวัสดุครุภัณฑ์
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"></th>
                   </tr>

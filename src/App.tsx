@@ -11,7 +11,6 @@ import PublicLayout from './layout/PublicLayout';
 //pages Authentication
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/employee/SignUp';
-import Profile from './pages/Profile';
 //pages assets
 import AssetTable from './pages/asset/AssetTable';
 import AssetInsert from './pages/asset/AssetInsert';
@@ -24,7 +23,7 @@ import { getStorage, removeStorage } from './constants/constant';
 import PublicMain from './pages/public-main/PublicMain';
 import AssetTypeTable from './pages/asset-types/AssetTypeTable';
 import AgencyTable from './pages/asset-agency/AgencyTable';
-import EmployeeTable from './pages/employee/Employee';
+import EmployeeTable from './pages/employee/EmployeeTable';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);

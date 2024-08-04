@@ -43,14 +43,9 @@ const AssetDetail = () => {
   
   return (
     <>
-      <Breadcrumb pageName="Asset" defaultPageName='หน้าหลัก' />
+      <Breadcrumb pageName="รายละเอียดวัสดุครุภัณฑ์" defaultPageName='หน้าหลัก' />
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
-            <h4 className="text-xl font-semibold text-black dark:text-white">
-              รายละเอียดครุภัณฑ์
-            </h4>
-          </div>
           <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
               <h4 className="text-xl font-semibold text-black dark:text-white">
@@ -88,7 +83,7 @@ const AssetDetail = () => {
                   <tr>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-lg text-black dark:text-white">
-                        รหัสครุภัณฑ์
+                        รหัสวัสดุครุภัณฑ์
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -100,7 +95,7 @@ const AssetDetail = () => {
                   <tr>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-lg text-black dark:text-white">
-                        ชื่อครุภัณฑ์
+                        ชื่อวัสดุครุภัณฑ์
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

@@ -59,7 +59,7 @@ export const GetAgencyService = async (
 
 export const GetListAgencyService = async () => {
   try {
-    const resp = await axios.post(serviceAgency.GET_AGENCY_URL);
+    const resp = await axios.post(serviceAgency.GET_LIST_AGENCY_URL);
     const json = resp.data
     switch (json.status) {
       case '200':        

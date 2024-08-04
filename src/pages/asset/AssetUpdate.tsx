@@ -20,10 +20,10 @@ import { processEnv } from '../../common/axios';
 const AssetSchema = Yup.object().shape({
   asset_code: Yup.string()
     .max(50, 'จำนวนตัวอักษรมากกว่า 100 ตัวอักษร')
-    .required('กรุณากรอกรหัสครุภัณฑ์'),
+    .required('กรุณากรอกรหัสวัสดุครุภัณฑ์'),
   asset_name: Yup.string()
     .max(250, 'จำนวนตัวอักษรมากกว่า 250 ตัวอักษร')
-    .required('กรุณากรอกชื่อครุภัณฑ์'),
+    .required('กรุณากรอกชื่อวัสดุครุภัณฑ์'),
   asset_model: Yup.string()
     .max(100, 'จำนวนตัวอักษรมากกว่า 100 ตัวอักษร')
     .required('กรุณากรอกรุ่น'),
@@ -37,6 +37,7 @@ const AssetSchema = Yup.object().shape({
 
 const AssetUpdate = () => {
   const location = useLocation()
+  const {id}:{id:string} = location.state ? location.state :{}
   const navigate = useNavigate()
   const [asset, setAsset] = useState<AssetJson>();
   const [assetType, setAssetType] = useState<AssetTypeJson[]>([]);
@@ -44,7 +45,6 @@ const AssetUpdate = () => {
   const [assetStatus, setAssetStatus] = useState<AssetStatusJson[]>([]);
   const [validateRepeat, setValidateRepeat] = useState<boolean>(false);
 
-  const {id}:{id:string} = location.state ? location.state :{}
   const emp_id = getStorage('key')
 
   useMemo(async () => {
@@ -66,14 +66,15 @@ const AssetUpdate = () => {
       setValidateRepeat(true)
     }
   };
+  
   return (
     <>
-      <Breadcrumb pageName="Asset Insert" defaultPageName='หน้าหลัก' />
+      <Breadcrumb pageName="แก้ไขวัสดุครุภัณฑ์" defaultPageName='หน้าหลัก' />
       <Formik
         enableReinitialize
         validationSchema={AssetSchema}
         initialValues={{
-          asset_id: asset ? asset.asset_id : "",
+          asset_id: id,
           asset_code: asset ? asset.asset_code : "",
           asset_name: asset ? asset.asset_name : "",
           asset_model: asset ? asset.asset_model : "",
@@ -152,7 +153,7 @@ const AssetUpdate = () => {
                 <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                   <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                      เพิ่มข้อมูลครุภัณฑ์
+                      เพิ่มข้อมูลวัสดุครุภัณฑ์
                     </h3>
                   </div>
                   <div className="p-7">
@@ -162,7 +163,7 @@ const AssetUpdate = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="phoneNumber"
                         >
-                          รหัสครุภัณฑ์
+                          รหัสวัสดุครุภัณฑ์
                         </label>
                         <input
                           disabled
@@ -176,7 +177,7 @@ const AssetUpdate = () => {
                         />
                         {validateRepeat && (
                           <p className="mt-3 block text-sm font-medium text-danger ">
-                            รหัสครุภัณฑ์ซ้ำ
+                            รหัสวัสดุครุภัณฑ์ซ้ำ
                           </p>
                         )}
 
@@ -191,7 +192,7 @@ const AssetUpdate = () => {
                           className="mb-3 block text-sm font-medium text-black dark:text-white"
                           htmlFor="fullName"
                         >
-                          ชื่อครุภัณฑ์
+                          ชื่อวัสดุครุภัณฑ์
                         </label>
                         <div className="relative">
                           <input
