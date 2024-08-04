@@ -11,16 +11,7 @@ import PublicLayout from './layout/PublicLayout';
 //pages Authentication
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
-import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Tables from './pages/Tables';
-import Alerts from './pages/UiElements/Alerts';
-import Buttons from './pages/UiElements/Buttons';
 //pages assets
 import AssetTable from './pages/assets/AssetTable';
 import AssetInsert from './pages/assets/AssetInsert';
@@ -34,7 +25,7 @@ import PublicMain from './pages/public-main/PublicMain';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [visible, setVisible] = useState<boolean>(true)
+  const [visible, setVisible] = useState<boolean>(true);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -42,7 +33,7 @@ function App() {
   }, [pathname]);
 
   useEffect(() => {
-    fetchData()
+    fetchData();
   }, []);
 
   const fetchData = async () => {
@@ -66,15 +57,15 @@ function App() {
   ) : visible ? (
     <PublicLayout>
       <Routes>
-      <Route
+        <Route
           index
           element={
-            <>    
-            <PageTitle title="Main" />
+            <>
+              <PageTitle title="Main" />
               <PublicMain />
             </>
           }
-        />  
+        />
 
         <Route
           path="/asset"
@@ -93,7 +84,7 @@ function App() {
               <PublicAsset />
             </>
           }
-        />        
+        />
         <Route
           path="/kru"
           element={
@@ -127,17 +118,8 @@ function App() {
               <AssetTable />
             </>
           }
-        />        
-        <Route
-          path='eommerce'
-          element={
-            <>
-              <PageTitle title="eCommerce Dashboard " />
-              <ECommerce />
-            </>
-          }
         />
-                <Route
+        <Route
           path="/asset/table"
           element={
             <>
@@ -145,7 +127,7 @@ function App() {
               <AssetTable />
             </>
           }
-        />       
+        />
         <Route
           path="/asset/insert"
           element={
@@ -155,7 +137,7 @@ function App() {
             </>
           }
         />
-                <Route
+        <Route
           path="/asset/update"
           element={
             <>
@@ -174,15 +156,6 @@ function App() {
           }
         />
         <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar " />
-              <Calendar />
-            </>
-          }
-        />
-                <Route
           path="/agency"
           element={
             <>
@@ -201,78 +174,6 @@ function App() {
           }
         />
         <Route
-          path="/forms/form-elements"
-          element={
-            <>
-              <PageTitle title="Form Elements " />
-              <FormElements />
-            </>
-          }
-        />
-        <Route
-          path="/forms/form-layout"
-          element={
-            <>
-              <PageTitle title="Form Layout " />
-              <FormLayout />
-            </>
-          }
-        />
-        <Route
-          path="/tables"
-          element={
-            <>
-              <PageTitle title="Tables " />
-              <Tables />
-            </>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <>
-              <PageTitle title="Settings " />
-              <Settings />
-            </>
-          }
-        />
-        <Route
-          path="/chart"
-          element={
-            <>
-              <PageTitle title="Basic Chart " />
-              <Chart />
-            </>
-          }
-        />
-        <Route
-          path="/ui/alerts"
-          element={
-            <>
-              <PageTitle title="Alerts " />
-              <Alerts />
-            </>
-          }
-        />
-        <Route
-          path="/ui/buttons"
-          element={
-            <>
-              <PageTitle title="Buttons " />
-              <Buttons />
-            </>
-          }
-        />
-        <Route
-          path="/auth/signin"
-          element={
-            <>
-              <PageTitle title="Signin " />
-              <SignIn />
-            </>
-          }
-        />
-        <Route
           path="/auth/signup"
           element={
             <>
@@ -285,122 +186,5 @@ function App() {
       </Routes>
     </AdminLayout>
   );
-  // return loading ? (
-  //   <Loader />
-  // ) : (
-    // <DefaultLayout>
-    //   <Routes>
-    //     <Route
-    //       index
-    //       element={
-    //         <>
-    //           <PageTitle title="eCommerce Dashboard " />
-    //           <ECommerce />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/calendar"
-    //       element={
-    //         <>
-    //           <PageTitle title="Calendar " />
-    //           <Calendar />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/profile"
-    //       element={
-    //         <>
-    //           <PageTitle title="Profile " />
-    //           <Profile />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/forms/form-elements"
-    //       element={
-    //         <>
-    //           <PageTitle title="Form Elements " />
-    //           <FormElements />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/forms/form-layout"
-    //       element={
-    //         <>
-    //           <PageTitle title="Form Layout " />
-    //           <FormLayout />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/tables"
-    //       element={
-    //         <>
-    //           <PageTitle title="Tables " />
-    //           <Tables />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/settings"
-    //       element={
-    //         <>
-    //           <PageTitle title="Settings " />
-    //           <Settings />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/chart"
-    //       element={
-    //         <>
-    //           <PageTitle title="Basic Chart " />
-    //           <Chart />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/ui/alerts"
-    //       element={
-    //         <>
-    //           <PageTitle title="Alerts " />
-    //           <Alerts />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/ui/buttons"
-    //       element={
-    //         <>
-    //           <PageTitle title="Buttons " />
-    //           <Buttons />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/auth/signin"
-    //       element={
-    //         <>
-    //           <PageTitle title="Signin " />
-    //           <SignIn />
-    //         </>
-    //       }
-    //     />
-    //     <Route
-    //       path="/auth/signup"
-    //       element={
-    //         <>
-    //           <PageTitle title="Signup " />
-    //           <SignUp />
-    //         </>
-    //       }
-    //     />
-    //   </Routes>
-    // </DefaultLayout>
-  // );
 }
-
 export default App;

@@ -10,7 +10,7 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+const PublicSidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
 
@@ -248,4 +248,4 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   );
 };
 
-export default Sidebar;
+export default PublicSidebar;
