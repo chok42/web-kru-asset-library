@@ -228,13 +228,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               {/* <!-- Menu Item Sign Up --> */}
                             <li>
                 <NavLink
-                  to="/signup"
+                  to="/employee"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('signup') && 'bg-graydark dark:bg-meta-4'
+                    pathname.includes('employee') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
                   <BsPersonWorkspace className="hover:text-danger" />
-                  ลงทะเบียน
+                  ผู้ใช้งาน
                 </NavLink>
               </li>
               {/* <!-- Menu Item Sign Up --> */}

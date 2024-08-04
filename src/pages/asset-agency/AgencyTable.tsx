@@ -5,17 +5,13 @@ import {
   BsCaretRight,
   BsCaretLeft,
   BsSearch,
+  BsPlus,
 } from 'react-icons/bs';
 import Swal from 'sweetalert2';
 import ReactPaginate from 'react-paginate';
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //services
-import {
-  DeleteAssetTypeService,
-  InsertAssetTypeService,
-  UpdateAssetTypeService,
-} from '../../services/asset-type.service';
 import { AgencyJson, DeleteAgencyService, GetAgencyService, InsertAgencyService, UpdateAgencyService } from '../../services/agency.service';
 
 const AgencyTable = () => {
@@ -167,28 +163,15 @@ const AgencyTable = () => {
             <h4 className="text-xl font-semibold text-black dark:text-white">
               ตารางประเภทครุภัณฑ์
             </h4>
-            <button
-              onClick={onSubmitInsert}
-              className="inline-flex items-center justify-center gap-2.5 bg-primary py-2.5 px-6 text-center font-medium text-white hover:bg-opacity-90 lg:px-6 xl:px-6"
-            >
-              <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
-              </span>
-              เพิ่มข้อมูล
-            </button>
+            {totalCount <= 8 && (
+              <button
+                onClick={onSubmitInsert}
+                className="inline-flex items-center justify-center gap-2.5 bg-primary py-2.5 px-6 text-center font-medium text-white hover:bg-opacity-90 lg:px-6 xl:px-6"
+              >
+                <BsPlus />
+                เพิ่มข้อมูล
+              </button>
+            )}
           </div>
           <div className="flex flex-row justify-between items-center py-6 px-4 md:px-6 xl:px-7.5 ">
             <div className="relative flex justify-between">
@@ -242,20 +225,14 @@ const AgencyTable = () => {
                             <button
                               type="button"
                               onClick={() =>
-                                onSubmitUpdate(
-                                  item.agency_id,
-                                  item.agency_name,
-                                )
+                                onSubmitUpdate(item.agency_id, item.agency_name)
                               }
                             >
                               <BsPencilSquare className="hover:text-warning" />
                             </button>
                             <button
                               onClick={() =>
-                                onClickDelete(
-                                  item.agency_id,
-                                  item.agency_name,
-                                )
+                                onClickDelete(item.agency_id, item.agency_name)
                               }
                             >
                               <BsTrash className="hover:text-danger" />

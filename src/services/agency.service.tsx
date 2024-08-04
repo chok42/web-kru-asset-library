@@ -125,7 +125,7 @@ export const UpdateAgencyService = async (data: UpdateAgencyJson) => {
 export const DeleteAgencyService = async (id: string) => {
   try {
     const body = {
-      asset_type_id: id,
+      agency_id: id,
     };
 
     const resp = await axios.post(serviceAgency.DELETE_AGENCY_URL, body);

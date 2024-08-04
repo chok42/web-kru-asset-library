@@ -1,169 +1,243 @@
-
-import axios from "../common/axios";
-import { getStorage, serviceEmployee, setStorage } from "../constants/constant";
+import axios from '../common/axios';
+import { getStorage, serviceEmployee, setStorage } from '../constants/constant';
 
 export interface LoginProps {
   username: string;
   password: string;
 }
 
-
-export const EmployeeLoginService = async (username:string, password:string) => {
-    try {
-      const body: { emp_username: string; emp_password: string } = {
-        emp_username: username,
-        emp_password: password,
-      };
-      const resp = await axios.post(serviceEmployee.GET_EMPLOYEE_LOGIN_URL,body);
-      const json = resp.data
-      switch (json.status) {
-        case '200':          
-          setStorage('key',json.data.emp_id)
-          setStorage('username',json.data.emp_username)
-          setStorage('action',json.data.emp_status)
-          setStorage('email',json.data.emp_email)
-          setStorage('level',json.data.role_id)
-          return "200"
-        case '400':
-          console.log('WARNING:', json.detail);
-          return '400'
-        case '404':
-          console.log('WARNING:', json.detail);
-          return '404'
-        default:
-          console.log('WARNING:', json.detail);
-          return "500"
-      }
-
-    } catch (error: any) {
-      console.log('ERROR:',error.message);
-      return "500"
+export const EmployeeLoginService = async (
+  username: string,
+  password: string,
+) => {
+  try {
+    const body: { emp_username: string; emp_password: string } = {
+      emp_username: username,
+      emp_password: password,
+    };
+    const resp = await axios.post(serviceEmployee.GET_EMPLOYEE_LOGIN_URL, body);
+    const json = resp.data;
+    switch (json.status) {
+      case '200':
+        setStorage('key', json.data.emp_id);
+        setStorage('username', json.data.emp_username);
+        setStorage('action', json.data.emp_status);
+        setStorage('email', json.data.emp_email);
+        setStorage('level', json.data.role_id);
+        return '200';
+      case '400':
+        console.log('WARNING:', json.detail);
+        return '400';
+      case '404':
+        console.log('WARNING:', json.detail);
+        return '404';
+      default:
+        console.log('WARNING:', json.detail);
+        return '500';
     }
-  };
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return '500';
+  }
+};
 
-  export const EmployeeAuthenService = async () => {
-    try {
-      const key =  getStorage('key')
-      const username =  getStorage('username')
-      const email =  getStorage('email')
-      const action =  getStorage('action')
-      const level =  getStorage('level')
-      const body = {
-        emp_id: key,
-        emp_username: username,
-        emp_email: email,
-        emp_status: action,
-        role_id: level,
-      };
-         
-      const resp = await axios.post(serviceEmployee.GET_EMPLOYEE_AUTHEN_URL,body);
-      const json = resp.data
-      
-      switch (json.status) {
-        case '200':
-          return "200"
-        case '400':
-          console.log('WARNING:', json.detail);
-          return '400'
-        case '404':
-          console.log('WARNING:', json.detail);
-          return '404'
-        default:
-          console.log('WARNING:', json.detail);
-          return "500"
-      }
+export const EmployeeAuthenService = async () => {
+  try {
+    const key = getStorage('key');
+    const username = getStorage('username');
+    const email = getStorage('email');
+    const action = getStorage('action');
+    const level = getStorage('level');
+    const body = {
+      emp_id: key,
+      emp_username: username,
+      emp_email: email,
+      emp_status: action,
+      role_id: level,
+    };
 
-    } catch (error: any) {
-      console.log('ERROR:',error.message);
-      return "500"
+    const resp = await axios.post(
+      serviceEmployee.GET_EMPLOYEE_AUTHEN_URL,
+      body,
+    );
+    const json = resp.data;
+
+    switch (json.status) {
+      case '200':
+        return '200';
+      case '400':
+        console.log('WARNING:', json.detail);
+        return '400';
+      case '404':
+        console.log('WARNING:', json.detail);
+        return '404';
+      default:
+        console.log('WARNING:', json.detail);
+        return '500';
     }
-  };
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return '500';
+  }
+};
 
-// export interface DataAuth {
-//   branch_id?: null;
-//   branch_name?: null;
-//   create_date: string;
-//   division_id: number;
-//   division_name: string;
-//   email?: null;
-//   emp_id: number;
-//   group_id?: null;
-//   name: string;
-//   organization_color_code: string;
-//   organization_color_code1: string;
-//   organization_id: number;
-//   organization_logo: string;
-//   organization_name: string;
-//   phone?: null;
-//   position_name: string;
-//   role_id?: null;
-//   status: number;
-//   systems_position_id: number;
-//   username: string;
-// }
+export interface EmployeeBody {
+  page: number;
+  pageSize: number;
+  search: string;
+  role_id: string;
+}
 
-// interface JsonAuth {
-//   data: DataAuth[];
-//   status: string;
-//   message: string;
-// }
+export interface EmployeeJson {
+  emp_id: string;
+  emp_username: string;
+  emp_password: string;
+  emp_firstname: string;
+  emp_lastname: string;
+  emp_phone: string;
+  emp_email: string;
+  emp_status: string;
+  role_id: string;
+  role_name: string;
+}
 
-// export const Authenticationction = async (emp_id: string, token: string) => {
-//   try {
+export interface EmployeeJsonSendData {
+  data: EmployeeJson[];
+  totalCount: number;
+  totalPages: number;
+  status: string;
+  message: string;
+  detail: string;
+}
+//employee
+//get
+export const GetEmployeeService = async (
+  page = 1,
+  pageSize = 10,
+  search = '',
+  role_id = '',
+) => {
+  try {
+    const body: EmployeeBody = {
+      page: page,
+      pageSize: pageSize,
+      search: search,
+      role_id: role_id,
+    };
+    const resp = await axios.post(serviceEmployee.GET_EMPLOYEE_URL, body);
+    const json: EmployeeJsonSendData = resp.data;
+    switch (json.status) {
+      case '200':
+        return json;
+      case '400':
+        console.log('WARNING:', json.detail);
+        return;
+      case '404':
+        console.log('WARNING:', json.detail);
+        return;
+      default:
+        console.log('WARNING:', json.detail);
+        return;
+    }
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return;
+  }
+};
 
-//     let res = await axios.get(service_car.GET_AUTHENTICATION_URL + `param1=${emp_id}&param2=${token}`);
-//     let json: JsonAuth = await res.data;
+export const GetByIdEmployeeService = async (id: string) => {
+  try {
+    const body: { asset_id: string } = {
+      asset_id: id,
+    };
+    const resp = await axios.post(serviceEmployee.GETBYID_EMPLOYEE_URL, body);
+    const json = resp.data;
+    switch (json.status) {
+      case '200':
+        const jsonData: EmployeeJson = json.data;
+        return jsonData;
+      case '404':
+        console.log('WARNING:', json.detail);
+        return;
+      default:
+        console.log('WARNING:', json.detail);
+        return;
+    }
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return;
+  }
+};
+export interface InsertAssetJson {
+  emp_username: string;
+  emp_password: string;
+  emp_firstname: string;
+  emp_lastname: string;
+  emp_phone: string;
+  emp_email: string;
+  emp_status: string;
+  role_id: string;
+}
 
-//     switch (json.status) {
-//       case "0":
-//         Swal.fire({
-//           title: "กรุณารอสักครู่!",
-//           timer: 1000,
-//           timerProgressBar: true,
-//           didOpen: () => {
-//             Swal.showLoading();
-//           },
-//           willClose: () => {
-//             Swal.fire({
-//               title: "แจ้งเตือน",
-//               text: "ข้อมูลการเข้าสู่ระบบบไม่ถูกต้องกำลังออกจากระบบ",
-//               position: "center",
-//               icon: "warning",
-//               showConfirmButton: false,
-//               timer: 3000,
-//               didOpen: () => {
-//                 Swal.showLoading();
-//               },
-//               willClose: () => {
-//                 removeStorage([]);
-//               },
-//             });
-//           },
-//         });
-//         return;
-//       case "1":
-//         if (json.data && json.data.length > 0) {
-//           const data = json.data[0];
-//           setStorage("level", data.systems_position_id);
-//           return data;
-//         }
-//         return;
-//       default:
-//         Swal.fire({
-//           icon: "error",
-//           title: "Oops...",
-//           text: "ไม่สามารถเชื่อมต่อเซิฟเวอร์ได้ กรุณาติดต่อผู้ดูแลระบบ!!",
-//         });
-//         return;
-//     }
-//   } catch (error:any) {
-//     //console.log('error:',error.message);
-//     Swal.fire({
-//       icon: "error",
-//       title: "Network Error",
-//       text: error.message
-//       //text: "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต!!",
-//     });
-//     return;
-//   }
-// };
+//insert
+export const InsertEmployeeService = async (data: InsertAssetJson) => {
+  try {
+    const body = { ...data };
+
+    const resp = await axios.post(serviceEmployee.INSERT_EMPLOYEE_URL, body);
+    const json = resp.data;
+
+    if (json) {
+      return json.status;
+    }
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return;
+  }
+};
+
+//update
+export interface UpdateAssetJson {
+  emp_id: string;
+  emp_username: string;
+  emp_password: string;
+  emp_firstname: string;
+  emp_lastname: string;
+  emp_phone: string;
+  emp_email: string;
+  emp_status: string;
+  role_id: string;
+}
+
+export const UpdateEmployeeService = async (data: UpdateAssetJson) => {
+  try {
+    const body = { ...data };
+
+    const resp = await axios.post(serviceEmployee.UPDATE_EMPLOYEE_URL, body);
+    const json = resp.data;
+    if (json) {
+      return json.status;
+    }
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return '500';
+  }
+};
+
+//delete
+export const DeleteEmployeeService = async (id: string) => {
+  try {
+    const body = {
+      asset_id: id,
+    };
+
+    const resp = await axios.post(serviceEmployee.DELETE_EMPLOYEE_URL, body);
+    const json = resp.data;
+    if (json) {
+      return json.status;
+    }
+  } catch (error: any) {
+    console.log('ERROR:', error.message);
+    return '500';
+  }
+};

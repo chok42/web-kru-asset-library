@@ -5,7 +5,11 @@ export const serviceEmployee = {
     //employee
     GET_EMPLOYEE_LOGIN_URL: "/employee/login",
     GET_EMPLOYEE_AUTHEN_URL: "/employee/authen",
-    GET_EMPLOYEE_REGISTER_URL: "/employee/register",
+    GET_EMPLOYEE_URL: "/employee/get",
+    GETBYID_EMPLOYEE_URL: "/employee/getbyid",
+    INSERT_EMPLOYEE_URL: "/employee/insert",
+    UPDATE_EMPLOYEE_URL: "/employee/update",
+    DELETE_EMPLOYEE_URL: "/employee/delete",
 }
 
 export const serviceAsset = {
