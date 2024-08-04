@@ -54,16 +54,14 @@ export const inputLengthThailand = (e: React.ChangeEvent<HTMLInputElement>) => {
 }
 
 export const inputLengthEnglish = (e: React.ChangeEvent<HTMLInputElement>) => {
-  return e.target.value.replace(/[^a-zA-Z0-9' ]/g, '')
+  return e.target.value.replace(/[^a-zA-Z0-9']/g, '')
     
 }
 
 export const inputEnglishUppercase = (e: React.ChangeEvent<HTMLInputElement>) => {
-  return e.target.value.replace(/[^A-Z0-9' ]/g, '') 
+  return e.target.value.replace(/[^A-Z0-9']/g, '') 
 }
 
 export const inputNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-  return e.target.value.replace(/[^0-9' ]/g, '') 
+  return e.target.value.replace(/[^0-9']/g, '') 
 }
-
-export const countNumber = [10,50,100,150,200,250,300,350,400,450,500,1000,1500,10000,15000,100000,150000]

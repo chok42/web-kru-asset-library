@@ -13,15 +13,17 @@ import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 import Profile from './pages/Profile';
 //pages assets
-import AssetTable from './pages/assets/AssetTable';
-import AssetInsert from './pages/assets/AssetInsert';
-import AssetUpdate from './pages/assets/AssetUpdate';
-import AssetDetail from './pages/assets/AssetDetail';
+import AssetTable from './pages/asset/AssetTable';
+import AssetInsert from './pages/asset/AssetInsert';
+import AssetUpdate from './pages/asset/AssetUpdate';
+import AssetDetail from './pages/asset/AssetDetail';
 //services
 import { EmployeeAuthenService } from './services/employee.service';
 import PublicAsset from './pages/public-asset/PublicAsset';
 import { getStorage, removeStorage } from './constants/constant';
 import PublicMain from './pages/public-main/PublicMain';
+import AssetTypeTable from './pages/asset-types/AssetTypeTable';
+import AgencyTable from './pages/asset-agency/AgencyTable';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -154,13 +156,22 @@ function App() {
               <AssetDetail />
             </>
           }
+        />   
+        <Route
+          path="/asset/asset-type"
+          element={
+            <>
+              <PageTitle title="AssetType Tables" />
+              <AssetTypeTable />
+            </>
+          }
         />
         <Route
           path="/agency"
           element={
             <>
-              <PageTitle title="Profile " />
-              <Profile />
+              <PageTitle title="Agency " />
+              <AgencyTable />
             </>
           }
         />
@@ -168,16 +179,7 @@ function App() {
           path="/signup"
           element={
             <>
-              <PageTitle title="Profile " />
-              <Profile />
-            </>
-          }
-        />
-        <Route
-          path="/auth/signup"
-          element={
-            <>
-              <PageTitle title="Signup " />
+              <PageTitle title="SignUp " />
               <SignUp />
             </>
           }

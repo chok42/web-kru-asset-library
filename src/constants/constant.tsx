@@ -22,12 +22,19 @@ export const serviceAssetType = {
     //asset type
     GET_ASSET_TYPE_URL: "/asset-type/get",
     GET_LIST_ASSET_TYPE_URL: "/asset-type/get-list",
+    INSERT_ASSET_TYPE_URL: "/asset-type/insert",
+    UPDATE_ASSET_TYPE_URL: "/asset-type/update",
+    DELETE_ASSET_TYPE_URL: "/asset-type/delete",
+
 }
 
 export const serviceAgency = {
     //aency
     GET_AGENCY_URL: "/agency/get",
     GET_LIST_AGENCY_URL: "/agency/get-list",
+    INSERT_AGENCY_URL: "/agency/insert",
+    UPDATE_AGENCY_URL: "/agency/update",
+    DELETE_AGENCY_URL: "/agency/delete",
 }
 
 

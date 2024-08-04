@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BsPencilSquare, BsTrash, BsInfoSquare } from 'react-icons/bs';
+import { BsPencilSquare, BsTrash, BsInfoSquare, BsCaretRight, BsCaretLeft } from 'react-icons/bs';
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //types
@@ -14,6 +14,7 @@ import {
 //common
 import { processEnv } from '../../common/axios';
 import Swal from 'sweetalert2';
+import ReactPaginate from 'react-paginate';
 
 export const proIsUsed: ProductIsUsed[] = [
   {
@@ -28,17 +29,30 @@ export const proIsUsed: ProductIsUsed[] = [
 
 const AssetTable = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(8);
+  const [search, setSearch] = useState<string>('');
   const [result, setResult] = useState<AssetJson[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     fatchData();
-  }, []);
+  }, [page, pageSize, search,]);
 
   const fatchData = async () => {
     const resp = await GetAssetService();
     if (resp && resp.data.length > 0) {
       setResult(resp.data);
+      setTotalCount(resp.totalCount)
+      setTotalPages(resp.totalPages)
     }
   };
+
+  const handlePageClick = (event: any) => {
+    const newOffset = event.selected + 1;
+    setPage(newOffset);
+  };
+
 
   const onClickDelete = (asset_id: string, asset_code: string) => {
     Swal.fire({
@@ -73,6 +87,8 @@ const AssetTable = () => {
       }
     });
   };
+
+
 
   return (
     <>
@@ -230,6 +246,45 @@ const AssetTable = () => {
                     ))}
                 </tbody>
               </table>
+              <div className="flex flex-row items-center justify-end">
+                <ReactPaginate
+                  className="flex justify-between w-50 items-center text-body dark:text-white"
+                  breakLabel="..."
+                  nextLabel={<BsCaretRight />}
+                  pageCount={totalPages}
+                  onPageChange={handlePageClick}
+                  previousLabel={<BsCaretLeft />}
+                />
+                <div className="flex  px-5 justify-center items-center">
+                  <select
+                    className="w-full rounded  py-2  text-black focus:border-primary focus-visible:outline-none  dark:bg-transparent dark:text-white dark:focus:border-primary"
+                    value={pageSize.toString()}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setPageSize(parseInt(value));
+                    }}
+                  >
+                    <option value={'8'} className="text-body dark:text-white">
+                      8
+                    </option>
+                    <option value={'12'} className="text-body dark:text-white">
+                      12
+                    </option>
+                    <option value={'16'} className="text-body dark:text-white">
+                      16
+                    </option>
+                    <option value={'20'} className="text-body dark:text-white">
+                      20
+                    </option>
+                    <option
+                      value={totalCount.toString()}
+                      className="text-body dark:text-white"
+                    >
+                      ทั้งหมด
+                    </option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>
