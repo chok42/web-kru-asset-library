@@ -41,6 +41,11 @@ export const serviceAgency = {
     DELETE_AGENCY_URL: "/agency/delete",
 }
 
+export const serviceRole = {
+    //aency
+    GET_LIST_ROLE_URL: "/role/get-list",
+}
+
 
 // Local Storage
 export const removeStorage = async (value:string[]) => {

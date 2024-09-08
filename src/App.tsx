@@ -8,22 +8,28 @@ import PageTitle from './components/PageTitle';
 //layout
 import AdminLayout from './layout/AdminLayout';
 import PublicLayout from './layout/PublicLayout';
-//pages Authentication
+//services
+import { EmployeeAuthenService } from './services/employee.service';
+//constants
+import { getStorage, removeStorage } from './constants/constant';
+//page Authentication
 import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/employee/SignUp';
 //pages assets
+import PublicAsset from './pages/public-asset/PublicAsset';
+import PublicMain from './pages/public-main/PublicMain';
 import AssetTable from './pages/asset/AssetTable';
 import AssetInsert from './pages/asset/AssetInsert';
 import AssetUpdate from './pages/asset/AssetUpdate';
 import AssetDetail from './pages/asset/AssetDetail';
-//services
-import { EmployeeAuthenService } from './services/employee.service';
-import PublicAsset from './pages/public-asset/PublicAsset';
-import { getStorage, removeStorage } from './constants/constant';
-import PublicMain from './pages/public-main/PublicMain';
+//page asset type
 import AssetTypeTable from './pages/asset-types/AssetTypeTable';
+//page agency
 import AgencyTable from './pages/asset-agency/AgencyTable';
-import EmployeeTable from './pages/employee/EmployeeTable';
+//pages employee
+// import EmployeeTable from './pages/employee/EmployeeTable';
+// import EmployeeDetail from './pages/employee/EmployeeDetail';
+// import EmployeeUpdate from './pages/employee/EmployeeUpdate';
+// import EmployeeInsert from './pages/employee/EmployeeInsert';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -175,7 +181,7 @@ function App() {
             </>
           }
         />    
-          <Route
+          {/* <Route
           path="/employee"
           element={
             <>
@@ -184,15 +190,33 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/signup"
+                  <Route
+          path="/employee/insert"
           element={
             <>
-              <PageTitle title="SignUp " />
-              <SignUp />
+              <PageTitle title="Employee " />
+              <EmployeeInsert />
             </>
           }
         />
+                          <Route
+          path="/employee/update"
+          element={
+            <>
+              <PageTitle title="Employee " />
+              <EmployeeUpdate />
+            </>
+          }
+        />
+                                  <Route
+          path="/employee/detail"
+          element={
+            <>
+              <PageTitle title="Employee " />
+              <EmployeeDetail />
+            </>
+          }
+        /> */}
         <Route path="/*" element={<Navigate to="/" replace />} />
       </Routes>
     </AdminLayout>

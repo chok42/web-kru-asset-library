@@ -215,6 +215,8 @@ export const UpdateEmployeeService = async (data: UpdateEmployeeJson) => {
 
     const resp = await axios.post(serviceEmployee.UPDATE_EMPLOYEE_URL, body);
     const json = resp.data;
+    console.log('json',json);
+    
     if (json) {
       return json.status;
     }

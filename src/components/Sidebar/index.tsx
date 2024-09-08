@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { BsHouse, BsPersonWorkspace } from 'react-icons/bs';
+import { BsHouse } from 'react-icons/bs';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo-kru_50.png';
 
@@ -226,7 +226,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li>
               {/* <!-- Menu Item Agency --> */}
               {/* <!-- Menu Item Sign Up --> */}
-                            <li>
+                            {/* <li>
                 <NavLink
                   to="/employee"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -236,7 +236,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <BsPersonWorkspace className="hover:text-danger" />
                   ผู้ใช้งาน
                 </NavLink>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Sign Up --> */}
                    
             </ul>

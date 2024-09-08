@@ -11,19 +11,19 @@ import {
 //components
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 //types
-import { ProductIsUsed } from '../../types/product';
+import { EmployeeStatus } from '../../types/employee';
 //services
-import {
-  DeleteAssetService,
-} from '../../services/asset.service';
 import Swal from 'sweetalert2';
 import ReactPaginate from 'react-paginate';
 import {
+  DeleteEmployeeService,
   EmployeeJson,
   GetEmployeeService,
 } from '../../services/employee.service';
 
-export const proIsUsed: ProductIsUsed[] = [
+
+
+export const empStatus: EmployeeStatus[] = [
   {
     id: '1',
     name: 'ใช้งาน',
@@ -33,6 +33,7 @@ export const proIsUsed: ProductIsUsed[] = [
     name: 'ไม่ได้ใช้งาน',
   },
 ];
+
 
 const EmployeeTable = () => {
   const navigate = useNavigate();
@@ -67,10 +68,10 @@ const EmployeeTable = () => {
 
   const indexOfItem = (index: number) =>  page * pageSize - pageSize + (index + 1);
 
-  const onClickDelete = (asset_id: string, asset_code: string) => {
+  const onClickDelete = (emp_id: string, emp_username: string) => {
     Swal.fire({
       title: 'คุณแน่ใจไหม?',
-      text: `หากคุณลบ ${asset_code} คุณจะไม่สามารถย้อนกลับสิ่งนี้ได้!`,
+      text: `หากคุณลบ ${emp_username} คุณจะไม่สามารถย้อนกลับสิ่งนี้ได้!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -79,7 +80,7 @@ const EmployeeTable = () => {
       cancelButtonText: `ยกเลิก`,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const res = await DeleteAssetService(asset_id);
+        const res = await DeleteEmployeeService(emp_id);
         if (res === '200') {
           Swal.fire({
             position: 'center',
@@ -111,7 +112,7 @@ const EmployeeTable = () => {
               ตารางผู้ใช้งาน
             </h4>
             <Link
-              to="/signup"
+              to="/employee/insert"
               className="inline-flex items-center justify-center gap-2.5 bg-primary py-2.5 px-6 text-center font-medium text-white hover:bg-opacity-90 lg:px-6 xl:px-6"
             >
               <span>
@@ -160,6 +161,9 @@ const EmployeeTable = () => {
                       ลำดับ
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                      ผู้ใช้งาน
+                    </th>
+                    <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                       ชื่อจริง นามสกุล
                     </th>
                     <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
@@ -168,11 +172,12 @@ const EmployeeTable = () => {
                     <th className="min-w-[120px] py-4 px-4 font-medium text-black dark:text-white">
                       อีเมล
                     </th>
-                    <th className="min-w-[50px]  py-4 px-4 font-medium text-black dark:text-white">
-                      การใช้งาน
-                    </th>
+
                     <th className="min-w-[120px]  py-4 px-4 font-medium text-black dark:text-white">
                       บทบาท
+                    </th>
+                    <th className="min-w-[50px]  py-4 px-4 font-medium text-black dark:text-white">
+                      การใช้งาน
                     </th>
                     <th className="py-4 px-4 font-medium text-black dark:text-white"></th>
                   </tr>
@@ -210,7 +215,12 @@ const EmployeeTable = () => {
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                           <p className="text-sm text-black dark:text-white">
-                            {item.emp_status}
+                            {item.role_name}
+                          </p>
+                        </td>
+                        <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                          <p className="text-sm text-black dark:text-white">
+                            {empStatus.find((fd)=> fd.id === item.emp_status)?.name}
                           </p>
                         </td>
                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -218,7 +228,7 @@ const EmployeeTable = () => {
                             <button
                               type="button"
                               onClick={() =>
-                                navigate(`/asset/detail`, {
+                                navigate(`/employee/detail`, {
                                   state: { id: item.emp_id },
                                 })
                               }
@@ -229,7 +239,7 @@ const EmployeeTable = () => {
                             <button
                               type="button"
                               onClick={() =>
-                                navigate(`/asset/update`, {
+                                navigate(`/employee/update`, {
                                   state: { id: item.emp_id },
                                 })
                               }

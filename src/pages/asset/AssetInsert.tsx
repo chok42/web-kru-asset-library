@@ -7,9 +7,10 @@ import { useNavigate } from 'react-router-dom';
 //services
 import {AssetTypeJson,GetListAssetTypeService} from '../../services/asset-type.service';
 import {AgencyJson,GetListAgencyService,} from '../../services/agency.service';
-import ImageUploader from './ImageUploader';
 import {AssetStatusJson,GetListAssetStatusService,InsertAssetJson,InsertAssetService} from '../../services/asset.service';
+//constants
 import { getStorage } from '../../constants/constant';
+import ImageUploader from './ImageUploader';
 
 
 const AssetSchema = Yup.object().shape({
