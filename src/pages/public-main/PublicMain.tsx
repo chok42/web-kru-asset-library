@@ -69,24 +69,24 @@ const PublicMain = () => {
         />
       </div>
       <div className="bg-transparent  flex justify-evenly mt-[-60px]">
-        <button className="bg-white h-[180px] w-[250px] rounded-sm flex flex-col justify-evenly items-center shadow-md "
-        onClick={onClickSearch}
+        <a href='https://arit.kru.ac.th/' target='_blank' className="bg-white h-[180px] w-[250px] rounded-sm flex flex-col justify-evenly items-center shadow-md "
+     
         >
           <img src={IconBooks} className='w-[75px] h-[75px] text-black' />
           <p className='text-black font-bold '>เกี่ยวกับห้องสมุด</p>
-        </button>
+        </a>
         <button className="bg-white h-[180px] w-[250px] rounded-sm flex flex-col justify-evenly items-center shadow-md"
          onClick={onClickSearch}
         >
           <img src={IconComputer} className='w-[90px] h-[90px] text-black object-contain'  />
           <p className='text-black font-bold'>เกี่ยวกับวัสดุครุภันฑ์</p>
         </button>
-        <button className="bg-white h-[180px] w-[250px] rounded-sm flex flex-col justify-evenly items-center shadow-md"
-          onClick={onClickSearch}
+        <a href='https://www.kru.ac.th/kru/intro/' target='_blank' className="bg-white h-[180px] w-[250px] rounded-sm flex flex-col justify-evenly items-center shadow-md"
+  
         >
           <img src={IconUniversity} className='w-[75px] h-[75px] text-black' />
           <p className='text-black font-bold'>เกี่ยวกับมหาวิทยาลัย</p>
-        </button>
+        </a>
       </div>
       <div className="mt-10 h-auto w-full">
         <div>

@@ -25,16 +25,17 @@ const DropdownPage = () => {
           >
             <ul className="flex h-auto flex-col overflow-y-auto">
               <li>
-                <Link
+                <a
                   className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  to="/library"
+                  href="https://arit.kru.ac.th/"
+                  target='_blank'
                 >
                   <p className="text-md">
                     <span className="text-black dark:text-white">
                       เกี่ยวกับห้องสมุด
                     </span>
                   </p>
-                </Link>
+                </a>
               </li>
               <li>
                 <Link
@@ -49,16 +50,17 @@ const DropdownPage = () => {
                 </Link>
               </li>
               <li>
-                <Link
+                <a
                   className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                  to="/kru"
+                  href="https://www.kru.ac.th/kru/intro/"
+                  target='_blank'
                 >
                   <p className="text-md">
                     <span className="text-black dark:text-white">
                       เกี่ยวกับมหาวิทยาลัย
                     </span>
                   </p>
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

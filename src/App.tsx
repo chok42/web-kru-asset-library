@@ -88,7 +88,7 @@ function App() {
           path="/library"
           element={
             <>
-              <PageTitle title="Library " />
+              <PageTitle title="Library" />
               <PublicAsset />
             </>
           }
