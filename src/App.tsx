@@ -31,6 +31,7 @@ import AgencyTable from './pages/asset-agency/AgencyTable';
 // import EmployeeUpdate from './pages/employee/EmployeeUpdate';
 // import EmployeeInsert from './pages/employee/EmployeeInsert';
 
+
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(true);
